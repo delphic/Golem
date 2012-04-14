@@ -168,7 +168,6 @@ namespace Golem
 
         private string CreateReturnStatement(IEnumerable<string> directories, IEnumerable<string> filesPaths, IEnumerable<string> additionalStatements, bool includeLowerCase)
         {
-            // Dev Sug - Have a way of adding multiple items to the return statement of directories
             // TODO: Should check for duplicates
             // TODO: Should throw warnings if start with a small letter (against convention) 
             var returnStatement = new StringBuilder();
@@ -202,7 +201,6 @@ namespace Golem
                 else
                 {
                     throw new ArgumentException("additional statement in incorrect form, needs to be of the form 'name: name,' but has value "+additionalStatement);
-                    // TODO: Does the build process catch exceptions and display the info?
                 }
             }
             returnStatement.Remove(returnStatement.Length - 1, 1);
