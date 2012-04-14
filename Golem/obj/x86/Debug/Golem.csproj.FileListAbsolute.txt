@@ -1,0 +1,11 @@
+C:\Users\Harry\documents\visual studio 2010\Projects\Golem\Golem\bin\Debug\Golem.exe
+C:\Users\Harry\documents\visual studio 2010\Projects\Golem\Golem\bin\Debug\Golem.pdb
+C:\Users\Harry\documents\visual studio 2010\Projects\Golem\Golem\obj\x86\Debug\ResolveAssemblyReference.cache
+C:\Users\Harry\documents\visual studio 2010\Projects\Golem\Golem\obj\x86\Debug\Golem.JavaScriptAppBuilder.resources
+C:\Users\Harry\documents\visual studio 2010\Projects\Golem\Golem\obj\x86\Debug\Golem.Properties.Resources.resources
+C:\Users\Harry\documents\visual studio 2010\Projects\Golem\Golem\obj\x86\Debug\GenerateResource.read.1.tlog
+C:\Users\Harry\documents\visual studio 2010\Projects\Golem\Golem\obj\x86\Debug\GenerateResource.write.1.tlog
+C:\Users\Harry\documents\visual studio 2010\Projects\Golem\Golem\obj\x86\Debug\Golem.exe
+C:\Users\Harry\documents\visual studio 2010\Projects\Golem\Golem\obj\x86\Debug\Golem.pdb
+C:\Users\Harry\documents\visual studio 2010\Projects\Golem\Golem\obj\x86\Debug\Golem.AddEditApp.resources
+C:\Users\Harry\documents\visual studio 2010\Projects\Golem\Golem\obj\x86\Debug\Golem.AppOrdering.resources
