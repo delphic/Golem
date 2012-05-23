@@ -5,15 +5,39 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.IO;
 using System.Windows.Forms;
+using Golem.AppBuilder.Config;
 
 namespace Golem
 {
     public class JavaScriptAppBuilderManager
     {
+        #region Declarations 
+
+        private IAppConfigManager _configManager;
         private Dictionary<string, JavaScriptApp> _javaScriptApps = new Dictionary<string,JavaScriptApp>();
+
+        #endregion
+
+        #region Constructors 
+
+        public JavaScriptAppBuilderManager(IAppConfigManager configManager)
+        {
+            if (configManager == null) { throw new ArgumentNullException("configManager"); }
+            this._configManager = configManager;
+            var savedApps = this._configManager.LoadAppsFromDirectory();
+            foreach (var savedApp in savedApps)
+            {
+                this._javaScriptApps.Add(savedApp.Name, savedApp);
+            }
+        }
+
+        #endregion
+
+        #region Public Methods
 
         public void AddApp(JavaScriptApp app)
         {
+            this._configManager.SaveApp(app, null);
             _javaScriptApps.Add(app.Name, app);
         }
 
@@ -22,13 +46,25 @@ namespace Golem
             return _javaScriptApps[appName];
         }
 
+        public IEnumerable<string> GetAllAppNames()
+        {
+            var result = new List<string>();
+            foreach (var key in this._javaScriptApps.Keys)
+            {
+                result.Add(this._javaScriptApps[key].Name);
+            }
+            return result;
+        }
+
         public void OverwriteApp(string appName, JavaScriptApp app)
         {
+            this._configManager.SaveApp(app, appName);
             _javaScriptApps[appName] = app;
         }
 
         public void RemoveApp(string appName)
         {
+            this._configManager.DeleteApp(appName);
             _javaScriptApps.Remove(appName);
         }
 
@@ -45,6 +81,8 @@ namespace Golem
                 fileStream.Write(fileContents.ToString());
             }
         }
+
+        #endregion
 
         #region Private Building Functions
 

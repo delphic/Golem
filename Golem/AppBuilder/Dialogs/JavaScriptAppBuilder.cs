@@ -6,6 +6,7 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using Golem.AppBuilder.Config;
 
 namespace Golem
 {
@@ -13,11 +14,12 @@ namespace Golem
     {
         // Why u no use interface?
         private JavaScriptAppBuilderManager _javaScriptAppBuilderManager;
-
+        
         public JavaScriptAppBuilder()
         {
-            this._javaScriptAppBuilderManager = new JavaScriptAppBuilderManager();
+            this._javaScriptAppBuilderManager = new JavaScriptAppBuilderManager(new AppConfigManager());
             InitializeComponent();
+            this.appsList.Items.AddRange(this._javaScriptAppBuilderManager.GetAllAppNames().ToArray());
         }
 
         private void addButton_Click(object sender, EventArgs e)
@@ -54,7 +56,9 @@ namespace Golem
             }
             else
             {
-                var orderingForm = new AppOrdering(this._javaScriptAppBuilderManager.GetApp(this.appsList.SelectedItem.ToString())); 
+                var orderingForm = new AppOrdering(
+                    this._javaScriptAppBuilderManager.GetApp(this.appsList.SelectedItem.ToString()), 
+                    this._javaScriptAppBuilderManager); 
                 orderingForm.ShowDialog(this);
             }
         }

@@ -14,6 +14,7 @@ namespace Golem
             this.Path = path;
             this.Type = type;
         }
+        public OrderItem() { }
         public string Path { get; set; }
         public OrderItemType Type { get; set; }
     }

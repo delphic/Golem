@@ -12,22 +12,25 @@ namespace Golem
 {
     public partial class AppOrdering : Form
     {
-        private JavaScriptApp app;
-        private OrderInformation originalOrdering;
-        private IDictionary<string, string> fullPathDictionary = new Dictionary<string, string>();
+        private JavaScriptAppBuilderManager _manager;
+        private JavaScriptApp _app;
+        private OrderInformation _originalOrdering;
+        private IDictionary<string, string> _fullPathDictionary = new Dictionary<string, string>();
 
-        public AppOrdering(JavaScriptApp app)
+        public AppOrdering(JavaScriptApp app, JavaScriptAppBuilderManager manager)
         {
             if (app == null) throw new ArgumentNullException("app");
-            this.app = app;
-            this.originalOrdering = app.OrderInformation;
+            if (manager == null) throw new ArgumentNullException("manager");
+            this._app = app;
+            this._manager = manager;
+            this._originalOrdering = app.OrderInformation;
 
             InitializeComponent();
 
             foreach (var directory in app.OrderInformation.Keys)
             {
                 var description = directory.Replace(app.RootDirectory, app.Name);
-                fullPathDictionary.Add(description, directory); 
+                _fullPathDictionary.Add(description, directory); 
                 this.directoryList.Items.Add(description);
             }
             
@@ -39,8 +42,8 @@ namespace Golem
             this.itemsList.Items.Clear();
             if (selectedItem != null)
             {
-                var selectedPath = fullPathDictionary[selectedItem.ToString()];
-                foreach (var item in app.OrderInformation[selectedPath])
+                var selectedPath = _fullPathDictionary[selectedItem.ToString()];
+                foreach (var item in _app.OrderInformation[selectedPath])
                 {
                     this.itemsList.Items.Add(Path.GetFileName(item.Path));
                 }
@@ -77,7 +80,7 @@ namespace Golem
 
         private void cancelButton_Click(object sender, EventArgs e)
         {
-            app.OrderInformation = originalOrdering;
+            _app.OrderInformation = _originalOrdering;
             this.Close();
         }
 
@@ -89,11 +92,11 @@ namespace Golem
 
         private void updateOrderInformation()
         {
-            var key = fullPathDictionary[this.directoryList.SelectedItem.ToString()];
+            var key = _fullPathDictionary[this.directoryList.SelectedItem.ToString()];
             var newOrder = new List<OrderItem>();
             foreach (var itemDesc in this.itemsList.Items)
             {
-                foreach (var item in this.app.OrderInformation[key])
+                foreach (var item in this._app.OrderInformation[key])
                 {
                     if (item.Path.EndsWith(itemDesc.ToString()))
                     {
@@ -102,7 +105,9 @@ namespace Golem
                     }
                 }
             }
-            this.app.OrderInformation[key] = newOrder;
+            this._app.OrderInformation[key] = newOrder;
+            // Save this information using the manager
+            this._manager.OverwriteApp(this._app.Name, this._app);
         }
     }
 }

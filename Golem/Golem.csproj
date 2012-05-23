@@ -46,36 +46,40 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AddEditApp.cs">
+    <Compile Include="AppBuilder\Config\AppConfig.cs" />
+    <Compile Include="AppBuilder\Config\AppConfigManager.cs" />
+    <Compile Include="AppBuilder\Config\IAppConfigManager.cs" />
+    <Compile Include="AppBuilder\Config\OrderInformationItem.cs" />
+    <Compile Include="AppBuilder\Dialogs\AddEditApp.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="AddEditApp.Designer.cs">
+    <Compile Include="AppBuilder\Dialogs\AddEditApp.Designer.cs">
       <DependentUpon>AddEditApp.cs</DependentUpon>
     </Compile>
-    <Compile Include="AppOrdering.cs">
+    <Compile Include="AppBuilder\Dialogs\AppOrdering.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="AppOrdering.Designer.cs">
+    <Compile Include="AppBuilder\Dialogs\AppOrdering.Designer.cs">
       <DependentUpon>AppOrdering.cs</DependentUpon>
     </Compile>
     <Compile Include="Golem.cs" />
-    <Compile Include="JavaScriptApp.cs" />
-    <Compile Include="JavaScriptAppBuilderManager.cs" />
-    <Compile Include="JavaScriptAppBuilder.cs">
+    <Compile Include="AppBuilder\Types\JavaScriptApp.cs" />
+    <Compile Include="AppBuilder\JavaScriptAppBuilderManager.cs" />
+    <Compile Include="AppBuilder\Dialogs\JavaScriptAppBuilder.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="JavaScriptAppBuilder.Designer.cs">
+    <Compile Include="AppBuilder\Dialogs\JavaScriptAppBuilder.Designer.cs">
       <DependentUpon>JavaScriptAppBuilder.cs</DependentUpon>
     </Compile>
-    <Compile Include="OrderInformation.cs" />
+    <Compile Include="AppBuilder\Types\OrderInformation.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="AddEditApp.resx">
+    <EmbeddedResource Include="AppBuilder\Dialogs\AddEditApp.resx">
       <DependentUpon>AddEditApp.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="AppOrdering.resx">
+    <EmbeddedResource Include="AppBuilder\Dialogs\AppOrdering.resx">
       <DependentUpon>AppOrdering.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="JavaScriptAppBuilder.resx">
+    <EmbeddedResource Include="AppBuilder\Dialogs\JavaScriptAppBuilder.resx">
       <DependentUpon>JavaScriptAppBuilder.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
@@ -97,6 +101,7 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

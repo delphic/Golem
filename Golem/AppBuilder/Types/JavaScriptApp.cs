@@ -24,7 +24,7 @@ namespace Golem
             string name,
             string rootDirectory,
             string outputDirectory,
-            bool includeLowerCase) 
+            bool includeLowerCase)
         {
             if (String.IsNullOrEmpty(name)) { throw new ArgumentNullException("name"); }
             if (String.IsNullOrEmpty(rootDirectory)) { throw new ArgumentNullException("rootDirectory"); }
@@ -35,6 +35,7 @@ namespace Golem
             this.IncludeLowerCase = includeLowerCase;
             this.OrderInformation = BuildInitialOrderInformation();
         }
+        public JavaScriptApp() { }
 
         #endregion
         

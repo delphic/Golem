@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
+using Golem.AppBuilder.Config;
 
 namespace Golem
 {
