@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using Golem.AppBuilder.Config;
+using Golem.AppBuilder;
 
 namespace Golem
 {
@@ -17,7 +18,7 @@ namespace Golem
         
         public JavaScriptAppBuilder()
         {
-            this._javaScriptAppBuilderManager = new JavaScriptAppBuilderManager(new AppConfigManager());
+            this._javaScriptAppBuilderManager = new JavaScriptAppBuilderManager(new AppConfigManager(), new Overlord());
             InitializeComponent();
             this.appsList.Items.AddRange(this._javaScriptAppBuilderManager.GetAllAppNames().ToArray());
         }

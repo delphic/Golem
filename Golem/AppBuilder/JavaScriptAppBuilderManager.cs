@@ -6,6 +6,7 @@ using System.Text.RegularExpressions;
 using System.IO;
 using System.Windows.Forms;
 using Golem.AppBuilder.Config;
+using Golem.AppBuilder;
 
 namespace Golem
 {
@@ -13,21 +14,26 @@ namespace Golem
     {
         #region Declarations 
 
-        private IAppConfigManager _configManager;
+        private readonly IAppConfigManager _configManager;
+        private readonly IOverlord _overlord;
         private Dictionary<string, JavaScriptApp> _javaScriptApps = new Dictionary<string,JavaScriptApp>();
 
         #endregion
 
         #region Constructors 
 
-        public JavaScriptAppBuilderManager(IAppConfigManager configManager)
+        public JavaScriptAppBuilderManager(IAppConfigManager configManager, IOverlord overlord)
         {
             if (configManager == null) { throw new ArgumentNullException("configManager"); }
+            if (overlord == null) { throw new ArgumentNullException("overlord"); }
             this._configManager = configManager;
+            this._overlord = overlord;
+            
             var savedApps = this._configManager.LoadAppsFromDirectory();
             foreach (var savedApp in savedApps)
             {
                 this._javaScriptApps.Add(savedApp.Name, savedApp);
+                this._overlord.Watch(savedApp.Name, savedApp.RootDirectory, new FileSystemEventHandler(OnAppChanged));
             }
         }
 
@@ -39,6 +45,7 @@ namespace Golem
         {
             this._configManager.SaveApp(app, null);
             _javaScriptApps.Add(app.Name, app);
+            this._overlord.Watch(app.Name, app.RootDirectory, new FileSystemEventHandler(OnAppChanged));
         }
 
         public JavaScriptApp GetApp(string appName)
@@ -59,13 +66,16 @@ namespace Golem
         public void OverwriteApp(string appName, JavaScriptApp app)
         {
             this._configManager.SaveApp(app, appName);
-            _javaScriptApps[appName] = app;
+            _javaScriptApps[app.Name] = app;
+            this._overlord.Unwatch(appName);
+            this._overlord.Watch(app.Name, app.RootDirectory, new FileSystemEventHandler(OnAppChanged));
         }
 
         public void RemoveApp(string appName)
         {
             this._configManager.DeleteApp(appName);
             _javaScriptApps.Remove(appName);
+            this._overlord.Unwatch(appName);
         }
 
         public void BuildApp(string appName)
@@ -79,6 +89,22 @@ namespace Golem
             using (var fileStream = new StreamWriter(app.OutputDirectory + @"\" + appName + ".js"))
             {
                 fileStream.Write(fileContents.ToString());
+            }
+        }
+
+        #endregion
+
+        #region Private Change Functions
+
+        private void OnAppChanged(object source, FileSystemEventArgs e)
+        {
+            foreach(var key in this._javaScriptApps.Keys) 
+            {
+                var app = this._javaScriptApps[key];
+                if (e.FullPath.Contains(app.RootDirectory))
+                {
+                    BuildApp(app.Name);
+                }
             }
         }
 

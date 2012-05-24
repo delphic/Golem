@@ -65,12 +65,10 @@ namespace Golem
             if (_selectedApp != null)
             {
                 this._javaScriptAppBuilder.OverwriteApp(_selectedApp.Name, app);
-                // TODO: Update the Overlord (filewatcher)
             }
             else
             {
                 this._javaScriptAppBuilder.AddApp(app);
-                // TODO: Register new app with the Overlord (filewatcher)
             }
 
             if (this._updateParentDialog != null)

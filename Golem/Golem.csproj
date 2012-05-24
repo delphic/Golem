@@ -62,6 +62,8 @@
     <Compile Include="AppBuilder\Dialogs\AppOrdering.Designer.cs">
       <DependentUpon>AppOrdering.cs</DependentUpon>
     </Compile>
+    <Compile Include="AppBuilder\IOverlord.cs" />
+    <Compile Include="AppBuilder\Overlord.cs" />
     <Compile Include="Golem.cs" />
     <Compile Include="AppBuilder\Types\JavaScriptApp.cs" />
     <Compile Include="AppBuilder\JavaScriptAppBuilderManager.cs" />
