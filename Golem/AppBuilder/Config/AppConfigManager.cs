@@ -42,26 +42,29 @@ namespace Golem.AppBuilder.Config
 
         public bool TryLoadApp(string path, ref JavaScriptApp app)
         {
-            try
+            var result = false;
+            using (var fileStream = new FileStream(path, FileMode.Open))
             {
-                var serialiser = new XmlSerializer(typeof(AppConfig));
-                var fileStream = new FileStream(path, FileMode.Open);
-                if (Path.GetExtension(path) == ".xml")
+                try
                 {
-                    AssignAppInformation((AppConfig)serialiser.Deserialize(fileStream), ref app);
-                    fileStream.Close();
-                    return true;
+                    var serialiser = new XmlSerializer(typeof(AppConfig));
+                    if (Path.GetExtension(path) == ".xml")
+                    {
+                        AssignAppInformation((AppConfig)serialiser.Deserialize(fileStream), ref app);
+                        result = true;
+                    }
+                }
+                catch (Exception)
+                {
+                    // Pokemon
                 }
             }
-            catch (Exception) 
-            { 
-                // Pokemon
-            }
-            return false;
+            return result;
         }        
 
         public void SaveApp(JavaScriptApp app, string previousName)
         {
+            
             if (previousName != null)
             {
                 File.Delete(_saveDirectory + previousName + ".xml");
@@ -71,11 +74,13 @@ namespace Golem.AppBuilder.Config
                 Directory.CreateDirectory(_saveDirectory);
             }
             var targetPath = _saveDirectory + app.Name + ".xml";
-            var fileStream = new FileStream(targetPath, FileMode.Create);
-            var xmlSerialiser = new XmlSerializer(typeof(AppConfig));
-            var xml = new AppConfig(app.Name, app.RootDirectory, app.OutputDirectory, app.OrderInformation, app.IncludeLowerCase);            
-            xmlSerialiser.Serialize(fileStream, xml);
-            fileStream.Close();
+
+            using (var fileStream = new FileStream(targetPath, FileMode.Create))
+            {
+                var xmlSerialiser = new XmlSerializer(typeof(AppConfig));
+                var xml = new AppConfig(app.Name, app.RootDirectory, app.OutputDirectory, app.OrderInformation, app.IncludeLowerCase);
+                xmlSerialiser.Serialize(fileStream, xml);
+            }
         }
 
         public void DeleteApp(string appName)
