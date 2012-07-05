@@ -21,25 +21,13 @@ namespace Golem
 
     public class OrderInformation : Dictionary<string, List<OrderItem>>
     {
-        public IEnumerable<string> GetOrderedSubDirectories(string path)
+        public IDictionary<string, OrderItemType> GetOrderedItems(string path)
         {
-            var result = new List<string>();
+            var result = new Dictionary<string, OrderItemType>();
 
             foreach (var item in this[path])
             {
-                if (item.Type.Equals(OrderItemType.Directory)) result.Add(item.Path);
-            }
-
-            return result;
-        }
-
-        public IEnumerable<string> GetOrderedFiles(string path)
-        {
-            var result = new List<string>();
-
-            foreach (var item in this[path])
-            {
-                if (item.Type.Equals(OrderItemType.File)) result.Add(item.Path);
+                result.Add(item.Path, item.Type);
             }
 
             return result;

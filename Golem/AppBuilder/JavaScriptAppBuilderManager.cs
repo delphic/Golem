@@ -115,22 +115,28 @@ namespace Golem
         // Dev Sug - Add \t to start of lines depending on 'depth'
         private void CreateModuleForDirectory(string path, StringBuilder output, JavaScriptApp app, bool includeLowerCase, string overrideName)
         {
-            var subDirectorys = app.OrderInformation.GetOrderedSubDirectories(path);
-            var filePaths = app.OrderInformation.GetOrderedFiles(path);
+            var items = app.OrderInformation.GetOrderedItems(path);
             var additionalReturnStatements = new List<string>();
-          
+
+            var subDirectorys = new List<string>();
+            var filePaths = new List<string>();
+
             var nameSpace = overrideName ?? Path.GetFileName(path);
             output.AppendLine("var " + nameSpace + " = function(){");
-            foreach (var subDirectory in subDirectorys)
+            foreach (var itemPath in items.Keys)
             {
-                 this.CreateModuleForDirectory(subDirectory, output, app, includeLowerCase, null);
-            }
-
-            foreach (var filePath in filePaths)
-            {
-                using (var fileStream = new StreamReader(filePath))
+                if (items[itemPath].Equals(OrderItemType.Directory))
                 {
-                    readFile(fileStream, output, additionalReturnStatements);
+                    this.CreateModuleForDirectory(itemPath, output, app, includeLowerCase, null);
+                    subDirectorys.Add(itemPath);
+                }
+                else if (items[itemPath].Equals(OrderItemType.File))
+                {
+                    using (var fileStream = new StreamReader(itemPath))
+                    {
+                        readFile(fileStream, output, additionalReturnStatements);
+                        filePaths.Add(itemPath);
+                    }
                 }
             }
            
